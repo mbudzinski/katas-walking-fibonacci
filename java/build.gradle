@@ -20,6 +20,7 @@ buildscript {
     repositories {
         mavenCentral()
     }
+
     dependencies {
         // ASSUMES GRADLE 2.12 OR HIGHER. Use plugin version 0.7.5 with earlier
         // gradle versions  x
@@ -53,24 +54,21 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
     mavenCentral()
+    // Spock snapshots are available from the Sonatype OSS snapshot repository
+    maven { url "http://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    compile "org.slf4j:slf4j-api"
-    compile 'org.slf4j:log4j-over-slf4j'
-
-    compile "io.reactivex.rxjava2:rxjava:${ver.rxjava}"
-
     // mandatory dependencies for using Spock
-    testCompile "org.codehaus.groovy:groovy-all:${ver.groovy}"
-    testCompile "org.spockframework:spock-core:${ver.spock}"
-    testCompile "org.spockframework:spock-spring:${ver.spock}"
+    compile "org.codehaus.groovy:groovy-all:2.4.1"
+    testCompile "org.spockframework:spock-core:1.1-groovy-2.4-rc-3"
 
     // optional dependencies for using Spock
-    testCompile "org.hamcrest:hamcrest-core:${ver.hamcrest}" // only necessary if Hamcrest matchers are used
-    testRuntime "cglib:cglib-nodep:${ver.cglib}"          // allows mocking of classes (in addition to interfaces)
-    testRuntime "org.objenesis:objenesis:${ver.objenesis}"    // allows mocking of classes without default constructor (together with CGLIB)
+    testCompile "org.hamcrest:hamcrest-core:1.3" // only necessary if Hamcrest matchers are used
+    testRuntime "cglib:cglib-nodep:3.2.4"          // allows mocking of classes (in addition to interfaces)
+    testRuntime "org.objenesis:objenesis:2.5.1"    // allows mocking of classes without default constructor (together with CGLIB)
+
 }
 
 compileJava {
@@ -79,14 +77,24 @@ compileJava {
     options.compilerArgs << '-parameters'
 }
 
-
-// Spock works with Java 1.5 and above
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
 idea {
     module {
         // love reading sources :)
         downloadSources = true
+    }
+}
+
+apply plugin: "idea"
+apply plugin: "eclipse"
+
+def gitIgnore = file(".gitignore").readLines()
+def gitIgnoreDirs = gitIgnore*.trim().findAll { !it.startsWith("#") && it.endsWith("/") }
+
+idea {
+    project {
+        jdkName "1.8"
+        configure(modules) {
+            excludeDirs = files(gitIgnoreDirs) as Set
+        }
     }
 }
