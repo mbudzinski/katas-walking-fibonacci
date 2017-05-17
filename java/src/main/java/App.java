@@ -1,9 +1,10 @@
 import java.math.BigInteger;
 import java.util.Iterator;
+import java.util.Spliterator;
 
 public class App {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         FibonacciSequence sequence = new FibonacciSequence();
 
         Iterator<BigInteger> fibonacciIterator = sequence.iterator();
@@ -14,6 +15,5 @@ public class App {
         for (int i = 0; i < 10; i++) {
             System.out.println(i + ": " + fibonacciIterator.next());
         }
-
     }
 }

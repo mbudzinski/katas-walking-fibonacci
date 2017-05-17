@@ -14,7 +14,6 @@ public class FibonacciSequence implements Iterable<BigInteger>{
         sequence = new ArrayList<>();
         sequence.add(BigInteger.ZERO);
         sequence.add(BigInteger.ONE);
-        sequence.add(BigInteger.ONE);
     }
 
 
@@ -58,38 +57,6 @@ public class FibonacciSequence implements Iterable<BigInteger>{
                 valueToReturn = getLast();
                 ++pointer;
                 return valueToReturn;
-            }
-        };
-    }
-
-
-    @Override
-    public void forEach(Consumer<? super BigInteger> action) {
-        sequence.forEach(action::accept);
-    }
-
-    @Override
-    public Spliterator<BigInteger> spliterator() {
-
-        return new Spliterator<BigInteger>() {
-            @Override
-            public boolean tryAdvance(Consumer<? super BigInteger> action) {
-                return false;
-            }
-
-            @Override
-            public Spliterator<BigInteger> trySplit() {
-                return null;
-            }
-
-            @Override
-            public long estimateSize() {
-                return 0;
-            }
-
-            @Override
-            public int characteristics() {
-                return 0;
             }
         };
     }
