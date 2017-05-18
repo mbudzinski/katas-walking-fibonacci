@@ -1,7 +1,6 @@
 import java.math.BigInteger;
 import java.util.Iterator;
-import java.util.Optional;
-import java.util.stream.Stream;
+
 
 public class App {
 
@@ -9,20 +8,18 @@ public class App {
         FibonacciSequence sequence = new FibonacciSequence();
 
         Iterator<BigInteger> fibonacciIterator = sequence.iterator();
-        for (int i = 0; i < 51; i ++) {
-            System.out.println(i + ": " + fibonacciIterator.next());
+
+        for (int i = 0; i < 8000000; i++) {
+            fibonacciIterator.next();
         }
 
-        for (int i = 0; i < 10; i++) {
-            System.out.println(i + ": " + fibonacciIterator.next());
-        }
+        System.out.println(fibonacciIterator.next());
 
+/*        FibonacciSequence sequenceToStream = new FibonacciSequence();
 
-        FibonacciSequence sequenceToStream = new FibonacciSequence();
+        BigInteger three = new BigInteger("3");*/
 
-        BigInteger three = new BigInteger("3");
-
-        for (int i = 0; i < 20; i++){
+        /*for (int i = 0; i < 20; i++){
             sequenceToStream.iterator().next();
         }
 
@@ -36,7 +33,7 @@ public class App {
             System.out.println("Found! : " + firstDivisibleByThree.get());
         } else {
             System.out.println("Not found!");
-        }
+        }*/
 
 
     }

@@ -29,6 +29,16 @@ public class FibonacciSequence implements Iterable<BigInteger>{
         return sequence.get(sequence.size() - 2);
     }
 
+    private void resetPointer() {
+        pointer = sequence.size() - 1;
+    }
+
+    private void clearSequence() {
+        while (sequence.size() > 3) {
+            sequence.remove(0);
+        }
+    }
+
     @Override
     public Iterator<BigInteger> iterator() {
 
@@ -51,6 +61,8 @@ public class FibonacciSequence implements Iterable<BigInteger>{
                     while (!hasNext()) {
                         BigInteger lastValue = getLast();
                         sequence.add(lastValue.add(getValueBeforeLast()));
+                        clearSequence();
+                        resetPointer();
                     }
                 }
 
