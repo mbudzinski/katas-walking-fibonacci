@@ -9,7 +9,7 @@ public class App {
 
         Iterator<BigInteger> fibonacciIterator = sequence.iterator();
 
-        for (int i = 0; i < 8000000; i++) {
+        for (int i = 0; i < 10000; i++) {
             fibonacciIterator.next();
         }
 

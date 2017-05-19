@@ -1,29 +1,29 @@
-import spock.lang.Shared
 import spock.lang.Specification
 
 class FibonacciSequenceTest extends Specification {
 
-    @Shared
-    LinkedList<BigInteger> resultList = [BigInteger.ZERO, BigInteger.ONE]
 
-    def 'Iterator of Fibonacci sequence returns 0 on 0'() {
+    def 'Iterator of Fibonacci sequence returns 0 on first call'() {
         given:
             FibonacciSequence sequence = new FibonacciSequence()
+            Iterator<BigInteger> iterator = sequence.iterator()
 
         when:
-            def result = ++sequence.iterator()
+
+            def result = iterator.next()
 
         then:
             result == BigInteger.ZERO
     }
 
-    def 'Iterator of Fibonacci sequence returns 1 on 1'() {
+    def 'Iterator of Fibonacci sequence returns 1 on second call'() {
         given:
             FibonacciSequence sequence = new FibonacciSequence()
+            Iterator<BigInteger> iterator = sequence.iterator()
 
         when:
-            ++sequence.iterator()
-            def result = ++sequence.iterator()
+            iterator.next()
+            def result = iterator.next()
 
         then:
             result == BigInteger.ONE
@@ -35,25 +35,26 @@ class FibonacciSequenceTest extends Specification {
             FibonacciSequence sequence = new FibonacciSequence()
             Iterator<BigInteger> iterator = sequence.iterator()
 
-        when:
-            true
-        then:
-            for(int i = 0; i < 10000; i++) {
-                def result = iterator.next()
-                resultList.removeAt(0)
-                resultList.add(result)
-                assert(result.toString() == expectedValue.toString())
+            def nMinus2 = BigInteger.ZERO
+            def nMinus1 = BigInteger.ONE
+            def n = BigInteger.ONE
+
+
+            for(int i = 0; i < 2000; i++) {
+                expect:
+                    if (i < 2) {
+                        n = iterator.next()
+                    }
+
+                    if (i > 1) {
+                        def nBeforeAddition = new BigInteger(n.toString())
+
+                        n = iterator.next()
+                        nMinus2 = new BigInteger(nMinus1.toString())
+                        nMinus1 = new BigInteger(nBeforeAddition.toString())
+
+                        assert(n.toString() == (nMinus1.add(nMinus2)).toString())
+                    }
             }
-
-        where:
-            expectedValue << getExpectedResultFromArray(resultList)
     }
-
-    def getExpectedResultFromArray(List<BigInteger> resultList) {
-        if (resultList == null) {
-            resultList = [BigInteger.ZERO, BigInteger.ONE, BigInteger.ONE]
-        }
-        return resultList.get(0).add(resultList.get(1))
-    }
-
 }

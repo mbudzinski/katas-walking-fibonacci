@@ -1,43 +1,19 @@
 import java.math.BigInteger;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.stream.Stream;
-
 
 public class FibonacciSequence implements Iterable<BigInteger>{
 
-    private List<BigInteger> sequence;
-
-    private int pointer = 0;
+    private BigInteger n;
+    private BigInteger nMinus1;
+    private BigInteger nMinus2;
+    private int pointer;
 
     public FibonacciSequence() {
-        sequence = new ArrayList<>();
-        sequence.add(BigInteger.ZERO);
-        sequence.add(BigInteger.ONE);
+        n = new BigInteger("1");
+        nMinus1 = BigInteger.ONE;
+        pointer = 0;
     }
 
-
-    public Stream<BigInteger> getStream() {
-        return sequence.stream();
-    }
-
-    private BigInteger getLast() {
-        return sequence.get(sequence.size() - 1);
-    }
-
-    private BigInteger getValueBeforeLast() {
-        return sequence.get(sequence.size() - 2);
-    }
-
-    private void resetPointer() {
-        pointer = sequence.size() - 1;
-    }
-
-    private void clearSequence() {
-        while (sequence.size() > 3) {
-            sequence.remove(0);
-        }
-    }
 
     @Override
     public Iterator<BigInteger> iterator() {
@@ -46,29 +22,26 @@ public class FibonacciSequence implements Iterable<BigInteger>{
 
             @Override
             public boolean hasNext() {
-                return pointer <= sequence.size() - 1;
+                return true;
             }
 
             @Override
             public BigInteger next() {
-                BigInteger valueToReturn;
 
-                if (hasNext()) {
-                    valueToReturn = sequence.get(pointer);
-                    ++pointer;
-                    return valueToReturn;
-                } else {
-                    while (!hasNext()) {
-                        BigInteger lastValue = getLast();
-                        sequence.add(lastValue.add(getValueBeforeLast()));
-                        clearSequence();
-                        resetPointer();
+                    if (pointer == 0) {
+                        pointer++;
+                        return BigInteger.ZERO;
                     }
-                }
+                    if (pointer == 1) {
+                        pointer++;
+                        return BigInteger.ONE;
+                    }
 
-                valueToReturn = getLast();
-                ++pointer;
-                return valueToReturn;
+                    BigInteger nBeforeAddition = new BigInteger(n.toString());
+                    nMinus2 = new BigInteger(nMinus1.toString());
+                    nMinus1 = new BigInteger(nBeforeAddition.toString());
+                    n = BigInteger.ZERO.add(nMinus1.add(nMinus2));
+                    return n;
             }
         };
     }
