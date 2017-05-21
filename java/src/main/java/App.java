@@ -1,5 +1,10 @@
 import java.math.BigInteger;
 import java.util.Iterator;
+import java.util.Optional;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 
 public class App {
@@ -13,28 +18,18 @@ public class App {
             fibonacciIterator.next();
         }
 
+        Stream<BigInteger> fibonacciStream = (Stream<BigInteger>) getStreamFromIterator(fibonacciIterator);
+
         System.out.println(fibonacciIterator.next());
 
-/*        FibonacciSequence sequenceToStream = new FibonacciSequence();
+        Optional<BigInteger> anyFibonacci = fibonacciStream.findAny();
 
-        BigInteger three = new BigInteger("3");*/
-
-        /*for (int i = 0; i < 20; i++){
-            sequenceToStream.iterator().next();
-        }
-
-        Stream<BigInteger> divisibleByThree = sequenceToStream.getStream().filter(bigInteger ->
-                BigInteger.ZERO.equals(bigInteger.remainder(three)) && !BigInteger.ZERO.equals(bigInteger)
-        );
-
-        Optional<BigInteger> firstDivisibleByThree = divisibleByThree.findFirst();
-
-        if (firstDivisibleByThree.isPresent()) {
-            System.out.println("Found! : " + firstDivisibleByThree.get());
-        } else {
-            System.out.println("Not found!");
-        }*/
-
-
+        anyFibonacci.ifPresent(System.out::println);
     }
+
+    private static <E> Stream<? extends E> getStreamFromIterator(Iterator<? extends E> iterator) {
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator,
+                                                                        Spliterator.ORDERED), false);
+    }
+
 }
