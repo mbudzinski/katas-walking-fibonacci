@@ -37,9 +37,9 @@ public class FibonacciSequence implements Iterable<BigInteger>{
                         return BigInteger.ONE;
                     }
 
-                    BigInteger nBeforeAddition = new BigInteger(n.toString());
-                    nMinus2 = new BigInteger(nMinus1.toString());
-                    nMinus1 = new BigInteger(nBeforeAddition.toString());
+                    BigInteger nBeforeAddition = n;
+                    nMinus2 = nMinus1;
+                    nMinus1 = nBeforeAddition;
                     n = BigInteger.ZERO.add(nMinus1.add(nMinus2));
                     return n;
             }

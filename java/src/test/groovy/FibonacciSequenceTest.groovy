@@ -50,8 +50,9 @@ class FibonacciSequenceTest extends Specification {
                         def nBeforeAddition = new BigInteger(n.toString())
 
                         n = iterator.next()
-                        nMinus2 = new BigInteger(nMinus1.toString())
-                        nMinus1 = new BigInteger(nBeforeAddition.toString())
+                        nMinus2 = nMinus1
+                        nMinus1 = nBeforeAddition
+
 
                         assert(n.toString() == (nMinus1.add(nMinus2)).toString())
                     }
